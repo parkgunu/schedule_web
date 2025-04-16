@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">✏ 일정 수정</h2>
+<form method="POST" class="space-y-4 bg-white p-6 rounded-xl shadow">
+  <div>
+    <label>일정 제목</label>
+    <input type="text" name="title" value="{{ task[1] }}" required class="w-full p-2 border rounded mt-1" />
+  </div>
+  <div>
+    <label>작성자</label>
+    <input type="text" name="assignee" value="{{ task[2] }}" required class="w-full p-2 border rounded mt-1" />
+  </div>
+  <div>
+    <label>일정 날짜</label>
+    <input type="date" name="due_date" value="{{ task[3] }}" required class="w-full p-2 border rounded mt-1" />
+  </div>
+  <div>
+    <label>상태</label>
+    <select name="status" class="w-full p-2 border rounded mt-1">
+      {% for key, label in status_labels.items() %}
+        <option value="{{ key }}" {% if task[4] == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded mt-4">저장</button>
+</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">🔍 일정 상세</h2>
+<div class="bg-white p-6 rounded-xl shadow space-y-2">
+  <p><strong>제목:</strong> {{ task[1] }}</p>
+  <p><strong>작성자:</strong> {{ task[2] }}</p>
+  <p><strong>일정 날짜:</strong> {{ task[3] }}</p>
+  <p><strong>상태:</strong> {{ status_labels[task[4]] }}</p>
+  <p><strong>등록일:</strong> {{ task[5] }}</p>
+</div>
+<a href="/edit/{{ task[0] }}" class="inline-block mt-4 text-indigo-600 hover:underline">✏ 수정하기</a>
+{% endblock %}
