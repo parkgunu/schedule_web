@@ -1,10 +1,57 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="bg-white p-4 rounded-lg shadow-md">
-    <h2 class="text-xl font-bold">{{ task[1] }}</h2>
-    <p class="text-gray-600 mt-2">{{ task[2] }}</p>
-    <p class="text-sm text-gray-400 mt-4">작성자: {{ task[3] }}</p>
-    <p class="text-sm text-gray-400">날짜: {{ task[4] }}</p>
-    <p class="text-sm text-gray-400">상태: {{ task[5] }}</p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일정 상세보기</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .detail-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .detail-box p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #555;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>일정 상세보기</h1>
+  <div class="detail-box">
+    <p><strong>제목:</strong> {{ task[1] }}</p>
+    <p><strong>내용:</strong> {{ task[2] }}</p>
+    <p><strong>작성자:</strong> {{ task[3] }}</p>
+    <p><strong>날짜:</strong> {{ task[4] }}</p>
+    <p><strong>상태:</strong> {{ task[5] }}</p>
+  </div>
+  <a class="back-link" href="/">← 목록으로 돌아가기</a>
+</body>
+</html>
