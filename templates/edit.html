@@ -1,27 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 class="text-xl font-semibold mb-4">✏ 일정 수정</h2>
-<form method="POST" class="space-y-4 bg-white p-6 rounded-xl shadow">
-  <div>
-    <label>일정 제목</label>
-    <input type="text" name="title" value="{{ task[1] }}" required class="w-full p-2 border rounded mt-1" />
-  </div>
-  <div>
-    <label>작성자</label>
-    <input type="text" name="assignee" value="{{ task[2] }}" required class="w-full p-2 border rounded mt-1" />
-  </div>
-  <div>
-    <label>일정 날짜</label>
-    <input type="date" name="due_date" value="{{ task[3] }}" required class="w-full p-2 border rounded mt-1" />
-  </div>
-  <div>
-    <label>상태</label>
-    <select name="status" class="w-full p-2 border rounded mt-1">
-      {% for key, label in status_labels.items() %}
-        <option value="{{ key }}" {% if task[4] == key %}selected{% endif %}>{{ label }}</option>
-      {% endfor %}
+<form method="POST" class="space-y-4">
+    <input name="title" value="{{ task[1] }}" required class="w-full p-2 border rounded" />
+    <textarea name="content" required class="w-full p-2 border rounded">{{ task[2] }}</textarea>
+    <input name="writer" value="{{ task[3] }}" required class="w-full p-2 border rounded" />
+    <input name="date" value="{{ task[4] }}" type="date" required class="w-full p-2 border rounded" />
+    <select name="status" required class="w-full p-2 border rounded">
+        <option value="예정" {% if task[5] == '예정' %}selected{% endif %}>예정</option>
+        <option value="진행중" {% if task[5] == '진행중' %}selected{% endif %}>진행중</option>
+        <option value="완료" {% if task[5] == '완료' %}selected{% endif %}>완료</option>
     </select>
-  </div>
-  <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded mt-4">저장</button>
+    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">수정 완료</button>
 </form>
 {% endblock %}

@@ -1,108 +1,76 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
-from datetime import datetime, date
+from datetime import datetime
 import os
 
 app = Flask(__name__)
-DB_NAME = 'tasks.db'
-
-STATUS_LABELS = {
-    "To-Do": "예정",
-    "In Progress": "진행중",
-    "Done": "완료"
-}
 
 def init_db():
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            assignee TEXT,
-            due_date TEXT,
-            status TEXT DEFAULT 'To-Do',
-            created_at TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-def get_task(task_id):
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute("SELECT id, title, assignee, due_date, status, created_at FROM tasks WHERE id = ?", (task_id,))
-    task = c.fetchone()
-    conn.close()
-    return task
+    with sqlite3.connect("tasks.db") as conn:
+        c = conn.cursor()
+        c.execute('''CREATE TABLE IF NOT EXISTS tasks (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT,
+                        content TEXT,
+                        writer TEXT,
+                        date TEXT,
+                        status TEXT)''')
 
 @app.route('/')
 def index():
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute("SELECT id, title, assignee, due_date, status FROM tasks ORDER BY due_date ASC")
-    tasks = c.fetchall()
-    today = date.today().isoformat()
-    c.execute("SELECT id, title FROM tasks WHERE due_date = ? AND status != 'Done'", (today,))
-    alerts = c.fetchall()
-    conn.close()
-    return render_template('index.html', tasks=tasks, current_status=None, alerts=alerts, status_labels=STATUS_LABELS)
-
-@app.route('/status/<status>')
-def filter_by_status(status):
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute("SELECT id, title, assignee, due_date, status FROM tasks WHERE status = ? ORDER BY due_date ASC", (status,))
-    tasks = c.fetchall()
-    conn.close()
-    return render_template('index.html', tasks=tasks, current_status=status, alerts=[], status_labels=STATUS_LABELS)
+    with sqlite3.connect("tasks.db") as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM tasks")
+        tasks = c.fetchall()
+    return render_template('index.html', tasks=tasks)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
         title = request.form['title']
-        assignee = request.form['assignee']
-        due_date = request.form['due_date']
+        content = request.form['content']
+        writer = request.form['writer']
+        date_val = request.form['date']
         status = request.form['status']
-        conn = sqlite3.connect(DB_NAME)
-        c = conn.cursor()
-        c.execute("INSERT INTO tasks (title, assignee, due_date, status, created_at) VALUES (?, ?, ?, ?, ?)",
-                  (title, assignee, due_date, status, datetime.now()))
-        conn.commit()
-        conn.close()
-        return redirect('/')
-    return render_template('add.html', status_labels=STATUS_LABELS)
-
-@app.route('/task/<int:task_id>')
-def task_detail(task_id):
-    task = get_task(task_id)
-    return render_template('detail.html', task=task, status_labels=STATUS_LABELS)
+        with sqlite3.connect("tasks.db") as conn:
+            c = conn.cursor()
+            c.execute("INSERT INTO tasks (title, content, writer, date, status) VALUES (?, ?, ?, ?, ?)",
+                      (title, content, writer, date_val, status))
+        return redirect(url_for('index'))
+    return render_template('add.html')
 
 @app.route('/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit(task_id):
-    if request.method == 'POST':
-        title = request.form['title']
-        assignee = request.form['assignee']
-        due_date = request.form['due_date']
-        status = request.form['status']
-        conn = sqlite3.connect(DB_NAME)
+    with sqlite3.connect("tasks.db") as conn:
         c = conn.cursor()
-        c.execute("UPDATE tasks SET title = ?, assignee = ?, due_date = ?, status = ? WHERE id = ?",
-                  (title, assignee, due_date, status, task_id))
-        conn.commit()
-        conn.close()
-        return redirect('/')
-    task = get_task(task_id)
-    return render_template('edit.html', task=task, status_labels=STATUS_LABELS)
+        if request.method == 'POST':
+            title = request.form['title']
+            content = request.form['content']
+            writer = request.form['writer']
+            date_val = request.form['date']
+            status = request.form['status']
+            c.execute("UPDATE tasks SET title=?, content=?, writer=?, date=?, status=? WHERE id=?",
+                      (title, content, writer, date_val, status, task_id))
+            return redirect(url_for('index'))
+        else:
+            c.execute("SELECT * FROM tasks WHERE id=?", (task_id,))
+            task = c.fetchone()
+    return render_template('edit.html', task=task)
 
-@app.route('/done/<int:task_id>')
-def mark_done(task_id):
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute("UPDATE tasks SET status = 'Done' WHERE id = ?", (task_id,))
-    conn.commit()
-    conn.close()
-    return redirect('/')
+@app.route('/detail/<int:task_id>')
+def detail(task_id):
+    with sqlite3.connect("tasks.db") as conn:
+        c = conn.cursor()
+        c.execute("SELECT * FROM tasks WHERE id=?", (task_id,))
+        task = c.fetchone()
+    return render_template('detail.html', task=task)
+
+@app.route('/delete/<int:task_id>', methods=['POST'])
+def delete(task_id):
+    with sqlite3.connect("tasks.db") as conn:
+        c = conn.cursor()
+        c.execute("DELETE FROM tasks WHERE id=?", (task_id,))
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     init_db()
