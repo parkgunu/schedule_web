@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>할 일 목록</title>
+  <title>일정 관리</title>
   <style>
     body {
       font-family: sans-serif;
@@ -79,26 +79,31 @@
   </style>
 </head>
 <body>
-  <h1>할 일 목록</h1>
+  <h1>일정 관리</h1>
 
-  {% for task in tasks %}
-  <div class="task">
-    <h3>{{ task[1] }}</h3>
-    <p>작성자: {{ task[3] }}</p>
-    <p>날짜: {{ task[4] }}</p>
-    <p>상태: {{ task[5] }}</p>
-    <div class="buttons">
-      <a href="/detail/{{ task[0] }}">상세보기</a>
-      <a href="/edit/{{ task[0] }}">수정</a>
-      <form action="/delete/{{ task[0] }}" method="POST" style="display:inline;">
-        <button type="submit">삭제</button>
-      </form>
+  {% if tasks %}
+    {% for task in tasks %}
+    <div class="task">
+      <h3>{{ task[1] }}</h3>
+      <p>내용: {{ task[2] }}</p>
+      <p>작성자: {{ task[3] }}</p>
+      <p>날짜: {{ task[4] }}</p>
+      <p>상태: {{ task[5] }}</p>
+      <div class="buttons">
+        <a href="/detail/{{ task[0] }}">상세보기</a>
+        <a href="/edit/{{ task[0] }}">수정</a>
+        <form action="/delete/{{ task[0] }}" method="POST" style="display:inline;">
+          <button type="submit">삭제</button>
+        </form>
+      </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    <p style="text-align: center;">등록된 일정이 없습니다.</p>
+  {% endif %}
 
   <div class="nav">
-    <a href="/add">+ 새 할 일 추가</a>
+    <a href="/add">+ 새 일정 추가</a>
   </div>
 </body>
 </html>
