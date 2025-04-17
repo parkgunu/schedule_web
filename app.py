@@ -5,16 +5,21 @@ import os
 
 app = Flask(__name__)
 
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(basedir, "tasks.db")
+
 def init_db():
-    with sqlite3.connect("tasks.db") as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS tasks (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        title TEXT,
-                        content TEXT,
-                        writer TEXT,
-                        date TEXT,
-                        status TEXT)''')
+        c.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL
+        )
+        """)
+        conn.commit()
+
 
 @app.route('/')
 def index():
