@@ -1,15 +1,95 @@
-{% extends 'base.html' %}
-{% block content %}
-<form method="POST" class="space-y-4">
-    <input name="title" placeholder="제목" required class="w-full p-2 border rounded" />
-    <textarea name="content" placeholder="내용" required class="w-full p-2 border rounded"></textarea>
-    <input name="writer" placeholder="작성자" required class="w-full p-2 border rounded" />
-    <input name="date" type="date" required class="w-full p-2 border rounded" />
-    <select name="status" required class="w-full p-2 border rounded">
-        <option value="예정">예정</option>
-        <option value="진행중">진행중</option>
-        <option value="완료">완료</option>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>할 일 등록</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #555;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>할 일 등록</h1>
+  <form action="/add" method="POST">
+    <label for="title">제목</label>
+    <input type="text" name="title" id="title" required>
+
+    <label for="content">내용</label>
+    <textarea name="content" id="content" required></textarea>
+
+    <label for="writer">작성자</label>
+    <input type="text" name="writer" id="writer" required>
+
+    <label for="date">날짜</label>
+    <input type="date" name="date" id="date" required>
+
+    <label for="status">상태</label>
+    <select name="status" id="status">
+      <option value="대기">대기</option>
+      <option value="진행중">진행중</option>
+      <option value="완료">완료</option>
     </select>
-    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">등록</button>
-</form>
-{% endblock %}
+
+    <button type="submit">등록</button>
+  </form>
+  <a class="back-link" href="/">← 목록으로 돌아가기</a>
+</body>
+</html>
