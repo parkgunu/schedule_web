@@ -25,7 +25,7 @@ def init_db():
         """)
         conn.commit()
 
-# 메인 페이지: 전체 목록 조회
+# 메인 페이지
 @app.route('/')
 def index():
     with sqlite3.connect(DB_PATH) as conn:
@@ -34,15 +34,15 @@ def index():
         tasks = c.fetchall()
     return render_template('index.html', tasks=tasks)
 
-# 등록 페이지
+# 일정 등록
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        writer = request.form['writer']
-        date_val = request.form['date']
-        status = request.form['status']
+        title = request.form.get('title')
+        content = request.form.get('content')
+        writer = request.form.get('writer')
+        date_val = request.form.get('date')
+        status = request.form.get('status')
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
             c.execute("INSERT INTO tasks (title, content, writer, date, status) VALUES (?, ?, ?, ?, ?)",
@@ -51,7 +51,7 @@ def add():
         return redirect(url_for('index'))
     return render_template('add.html')
 
-# 수정 페이지
+# 일정 수정
 @app.route('/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit(task_id):
     with sqlite3.connect(DB_PATH) as conn:
@@ -89,5 +89,5 @@ def delete(task_id):
         conn.commit()
     return redirect(url_for('index'))
 
-# DB 초기화 실행
+# 실행 시 DB 초기화
 init_db()
