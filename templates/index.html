@@ -24,11 +24,11 @@
       background: white;
       border-radius: 10px;
       padding: 16px 20px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .task h3 {
@@ -37,18 +37,20 @@
       color: #34495e;
     }
 
-    .meta {
+    .meta-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 14px;
       color: #555;
     }
 
-    .meta i {
-      margin-right: 6px;
+    .meta-line i {
       color: #3498db;
     }
 
     .buttons {
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .buttons a {
@@ -103,10 +105,10 @@
     {% for task in tasks %}
     <div class="task">
       <h3>{{ task[1] }}</h3>
-      <p class="meta"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</p>
-      <p class="meta"><i class="fa-solid fa-user"></i> {{ task[3] }}</p>
-      <p class="meta"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</p>
-      <p class="meta"><i class="fa-solid fa-circle-info"></i> {{ task[5] }}</p>
+      <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</div>
+      <div class="meta-line"><i class="fa-solid fa-user"></i> {{ task[3] }}</div>
+      <div class="meta-line"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</div>
+      <div class="meta-line"><i class="fa-solid fa-circle-info"></i> {{ task[5] }}</div>
       <div class="buttons">
         <a href="/detail/{{ task[0] }}">상세보기</a>
         <a href="/edit/{{ task[0] }}">수정</a>
