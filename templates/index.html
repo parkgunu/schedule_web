@@ -10,7 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       padding: 20px;
       background: #f4f6f8;
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
 
@@ -18,24 +18,27 @@
       text-align: center;
       font-size: 24px;
       color: #2c3e50;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    .filters {
-      text-align: center;
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .filters a {
       display: inline-block;
-      margin: 0 6px;
-      padding: 8px 14px;
+      margin-right: 6px;
+      padding: 6px 12px;
       font-size: 14px;
       border-radius: 20px;
       background-color: #ecf0f1;
       text-decoration: none;
       color: #34495e;
-      transition: 0.2s;
     }
 
     .filters a.active {
@@ -43,35 +46,53 @@
       color: white;
     }
 
+    .top-bar .add-btn {
+      background-color: #2ecc71;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .top-bar .add-btn:hover {
+      background-color: #27ae60;
+    }
+
     .task {
       background: white;
       border-radius: 12px;
       padding: 16px 20px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .task h3 {
+    .info {
+      flex: 1 1 60%;
+    }
+
+    .info h3 {
       margin: 0 0 6px 0;
       font-size: 18px;
       color: #2c3e50;
     }
 
-    .task p {
-      margin: 4px 0;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .meta {
+    .meta-line {
       display: flex;
       align-items: center;
       gap: 6px;
       font-size: 14px;
       color: #555;
+      margin: 3px 0;
     }
 
-    .meta i {
+    .meta-line i {
       color: #3498db;
     }
 
@@ -89,14 +110,16 @@
     .status-완료 { background-color: #2ecc71; color: white; }
 
     .buttons {
-      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
     }
 
     .buttons a {
       color: #2980b9;
-      margin-right: 10px;
-      text-decoration: none;
       font-weight: 500;
+      text-decoration: none;
     }
 
     .buttons button {
@@ -109,43 +132,38 @@
       cursor: pointer;
     }
 
-    .nav {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .nav a {
-      background-color: #2ecc71;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    .buttons a:hover,
+    .buttons button:hover {
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
   <h1>일정 관리</h1>
 
-  <div class="filters">
-    {% for label in ['전체', '예정', '진행중', '완료'] %}
-      <a href="/?status={{ label }}" class="{{ 'active' if current_filter == label else '' }}">{{ label }}</a>
-    {% endfor %}
+  <div class="top-bar">
+    <div class="filters">
+      {% for label in ['전체', '예정', '진행중', '완료'] %}
+        <a href="/?status={{ label }}" class="{{ 'active' if current_filter == label else '' }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    <a href="/add" class="add-btn">+ 일정 추가</a>
   </div>
 
   {% if tasks %}
     {% for task in tasks %}
     <div class="task">
-      <h3>{{ task[1] }}</h3>
-      <p class="meta"><i class="fa-solid fa-user"></i> {{ task[3] }}</p>
-      <p class="meta"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</p>
-      <p class="meta"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</p>
-      <span class="status-badge status-{{ task[5] }}">{{ task[5] }}</span>
+      <div class="info">
+        <h3>{{ task[1] }}</h3>
+        <div class="meta-line"><i class="fa-solid fa-user"></i> {{ task[3] }}</div>
+        <div class="meta-line"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</div>
+        <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</div>
+        <span class="status-badge status-{{ task[5] }}">{{ task[5] }}</span>
+      </div>
       <div class="buttons">
         <a href="/detail/{{ task[0] }}">상세보기</a>
         <a href="/edit/{{ task[0] }}">수정</a>
-        <form action="/delete/{{ task[0] }}" method="POST" style="display:inline;">
+        <form action="/delete/{{ task[0] }}" method="POST" style="margin: 0;">
           <button type="submit">삭제</button>
         </form>
       </div>
@@ -154,9 +172,5 @@
   {% else %}
     <p style="text-align: center;">등록된 일정이 없습니다.</p>
   {% endif %}
-
-  <div class="nav">
-    <a href="/add">+ 일정 추가</a>
-  </div>
 </body>
 </html>
