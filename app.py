@@ -30,7 +30,7 @@ def init_db():
 def index():
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
-        c.execute("SELECT * FROM tasks")
+        c.execute("SELECT * FROM tasks ORDER BY date ASC")
         tasks = c.fetchall()
     return render_template('index.html', tasks=tasks)
 
@@ -92,9 +92,3 @@ def delete(task_id):
 # 실행 시 DB 초기화
 init_db()
 
-# --- 상태 일괄 수정용 코드 (임시) ---
-with sqlite3.connect(DB_PATH) as conn:
-    c = conn.cursor()
-    c.execute("UPDATE tasks SET status = '예정' WHERE status = '대기'")
-    conn.commit()
-# -----------------------------------

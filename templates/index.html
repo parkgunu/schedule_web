@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>일정 관리</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       padding: 20px;
-      margin: auto;
       max-width: 800px;
-      background: linear-gradient(to right, #f0f2f5, #e0f7fa);
+      margin: auto;
+      background: #ecf0f1;
     }
 
     h1 {
@@ -21,40 +22,39 @@
 
     .task {
       background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.1s ease-in-out;
-    }
-
-    .task:hover {
-      transform: scale(1.01);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .task h3 {
-      margin-top: 0;
+      margin: 0;
+      font-size: 18px;
       color: #34495e;
     }
 
-    .task p {
-      margin: 4px 0;
+    .meta {
+      font-size: 14px;
       color: #555;
-      font-size: 15px;
+    }
+
+    .meta i {
+      margin-right: 6px;
+      color: #3498db;
     }
 
     .buttons {
-      margin-top: 12px;
-    }
-
-    .buttons a, .buttons form {
-      display: inline-block;
+      margin-top: 8px;
     }
 
     .buttons a {
       color: #2980b9;
       text-decoration: none;
-      margin-right: 10px;
+      margin-right: 12px;
       font-weight: 500;
     }
 
@@ -67,7 +67,7 @@
       color: white;
       border: none;
       padding: 6px 14px;
-      font-size: 14px;
+      font-size: 13px;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -88,7 +88,7 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     }
 
     .nav a:hover {
@@ -103,10 +103,10 @@
     {% for task in tasks %}
     <div class="task">
       <h3>{{ task[1] }}</h3>
-      <p><strong>내용:</strong> {{ task[2] }}</p>
-      <p><strong>작성자:</strong> {{ task[3] }}</p>
-      <p><strong>날짜:</strong> {{ task[4] }}</p>
-      <p><strong>상태:</strong> {{ task[5] }}</p>
+      <p class="meta"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</p>
+      <p class="meta"><i class="fa-solid fa-user"></i> {{ task[3] }}</p>
+      <p class="meta"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</p>
+      <p class="meta"><i class="fa-solid fa-circle-info"></i> {{ task[5] }}</p>
       <div class="buttons">
         <a href="/detail/{{ task[0] }}">상세보기</a>
         <a href="/edit/{{ task[0] }}">수정</a>
