@@ -28,11 +28,16 @@ def init_db():
 # 메인 페이지
 @app.route('/')
 def index():
+    filter_status = request.args.get('status')
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
-        c.execute("SELECT * FROM tasks ORDER BY date ASC")
+        if filter_status and filter_status != '전체':
+            c.execute("SELECT * FROM tasks WHERE status = ? ORDER BY date ASC", (filter_status,))
+        else:
+            c.execute("SELECT * FROM tasks ORDER BY date ASC")
         tasks = c.fetchall()
-    return render_template('index.html', tasks=tasks)
+    return render_template('index.html', tasks=tasks, current_filter=filter_status or '전체')
+
 
 # 일정 등록
 @app.route('/add', methods=['GET', 'POST'])
