@@ -83,10 +83,11 @@
 
     <label for="status">상태</label>
     <select name="status" id="status">
-      <option value="대기" {% if task[5] == '대기' %}selected{% endif %}>대기</option>
-      <option value="진행중" {% if task[5] == '진행중' %}selected{% endif %}>진행중</option>
-      <option value="완료" {% if task[5] == '완료' %}selected{% endif %}>완료</option>
-    </select>
+        <option value="예정" {% if task[5] == '예정' %}selected{% endif %}>예정</option>
+        <option value="진행중" {% if task[5] == '진행중' %}selected{% endif %}>진행중</option>
+        <option value="완료" {% if task[5] == '완료' %}selected{% endif %}>완료</option>
+      </select>
+      
 
     <button type="submit">수정 완료</button>
   </form>
