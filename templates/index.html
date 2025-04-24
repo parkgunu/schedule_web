@@ -67,29 +67,18 @@
       margin-bottom: 14px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .info {
-      flex: 1 1 60%;
+      flex: 1 1 100%;
     }
 
     .info h3 {
       margin: 0;
       font-size: 18px;
       color: #2c3e50;
-    }
-
-    .info .date {
-      font-size: 14px;
-      color: #999;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 4px;
     }
 
     .meta-line {
@@ -117,6 +106,21 @@
     .status-예정 { background-color: #f1c40f; color: white; }
     .status-진행중 { background-color: #3498db; color: white; }
     .status-완료 { background-color: #2ecc71; color: white; }
+
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .date-bottom {
+      font-size: 14px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     .buttons {
       display: flex;
@@ -168,14 +172,16 @@
         <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task.content }}</div>
         <span class="status-badge status-{{ task.status }}">{{ task.status }}</span>
       </div>
-      <div class="buttons">
-        <a href="/detail/{{ task.id }}">상세보기</a>
-        <a href="/edit/{{ task.id }}">수정</a>
-        <form action="/delete/{{ task.id }}" method="POST" style="margin:0;">
-          <button type="submit">삭제</button>
-        </form>
+      <div class="bottom-bar">
         <div class="date-bottom">
           <i class="fa-solid fa-calendar-days"></i> {{ task.date }}
+        </div>
+        <div class="buttons">
+          <a href="/detail/{{ task.id }}">상세보기</a>
+          <a href="/edit/{{ task.id }}">수정</a>
+          <form action="/delete/{{ task.id }}" method="POST" style="margin:0;">
+            <button type="submit">삭제</button>
+          </form>
         </div>
       </div>
     </div>
