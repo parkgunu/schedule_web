@@ -163,23 +163,22 @@
     {% for task in tasks %}
     <div class="task">
       <div class="info">
-        <h3>{{ task[1] }}</h3>
-        <div class="meta-line"><i class="fa-solid fa-user"></i> {{ task[3] }}</div>
-        <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</div>
-        <span class="status-badge status-{{ task[5] }}">{{ task[5] }}</span>
+        <h3>{{ task.title }}</h3>
+        <div class="meta-line"><i class="fa-solid fa-user"></i> {{ task.writer }}</div>
+        <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task.content }}</div>
+        <span class="status-badge status-{{ task.status }}">{{ task.status }}</span>
       </div>
       <div class="buttons">
-        <a href="/detail/{{ task[0] }}">상세보기</a>
-        <a href="/edit/{{ task[0] }}">수정</a>
-        <form action="/delete/{{ task[0] }}" method="POST" style="margin:0;">
+        <a href="/detail/{{ task.id }}">상세보기</a>
+        <a href="/edit/{{ task.id }}">수정</a>
+        <form action="/delete/{{ task.id }}" method="POST" style="margin:0;">
           <button type="submit">삭제</button>
         </form>
         <div class="date-bottom">
-          <i class="fa-solid fa-calendar-days"></i> {{ task[4] }}
+          <i class="fa-solid fa-calendar-days"></i> {{ task.date }}
         </div>
       </div>
     </div>
-    
     {% endfor %}
   {% else %}
     <p style="text-align: center;">등록된 일정이 없습니다.</p>
