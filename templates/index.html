@@ -163,10 +163,7 @@
     {% for task in tasks %}
     <div class="task">
       <div class="info">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-          <h3>{{ task[1] }}</h3>
-          <div class="date"><i class="fa-solid fa-calendar-days"></i> {{ task[4] }}</div>
-        </div>
+        <h3>{{ task[1] }}</h3>
         <div class="meta-line"><i class="fa-solid fa-user"></i> {{ task[3] }}</div>
         <div class="meta-line"><i class="fa-solid fa-file-lines"></i> {{ task[2] }}</div>
         <span class="status-badge status-{{ task[5] }}">{{ task[5] }}</span>
@@ -177,8 +174,12 @@
         <form action="/delete/{{ task[0] }}" method="POST" style="margin:0;">
           <button type="submit">삭제</button>
         </form>
+        <div class="date-bottom">
+          <i class="fa-solid fa-calendar-days"></i> {{ task[4] }}
+        </div>
       </div>
     </div>
+    
     {% endfor %}
   {% else %}
     <p style="text-align: center;">등록된 일정이 없습니다.</p>

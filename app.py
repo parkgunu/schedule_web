@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
-from datetime import datetime
+from dotenv import load_dotenv
 import os
+
+load_dotenv()  # .env 파일에서 환경변수 읽기
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+
 
 app = Flask(__name__)
 
